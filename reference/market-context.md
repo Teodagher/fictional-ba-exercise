@@ -1,30 +1,60 @@
 # Fictional Euronext Market Context
 
-This reference is invented for the workshop. It uses the vocabulary and operating shape of a pan-European exchange group, but it does not describe real Euronext systems, products, service levels, clients, or internal processes.
+This reference is invented for the workshop. It uses public vocabulary and the general operating shape of a pan-European exchange group, but it does **not** describe real Euronext systems, products, service levels, clients, or internal processes. Figures are fictional.
 
-## Operating setting
+## 1. Operating setting
 
-The fictional Euronext group operates regulated markets across Amsterdam, Brussels, Dublin, Lisbon, Milan, Oslo, and Paris. Its client-facing Investor Workspace presents information about listed instruments from those venues through approved digital channels.
+The fictional group operates seven regulated markets. Its client-facing **Investor Workspace** shows information on instruments listed on those venues.
 
-The BA team must consider cross-market differences without designing seven separate products. A single capability may need a common user experience, while instrument eligibility, identifiers, calendars, event timing, language, and source-data quality can vary by venue or market segment.
+| Venue | MIC | Local time vs CET | Share of Workspace MAU (fictional) | Covered instruments (est.) |
+|---|---|---|---|---|
+| Paris | XPAR | same | 34% | ~780 |
+| Amsterdam | XAMS | same | 19% | ~570 |
+| Milan | MTAA | same | 18% | ~750 |
+| Brussels | XBRU | same | 9% | ~240 |
+| Oslo | XOSL | same | 8% | ~380 |
+| Lisbon | XLIS | –1h | 6% | ~70 |
+| Dublin | XMSM | –1h | 6% | ~110 |
+| **Total** | | | | **~2,900** (incl. ~1,100 ETFs listed across venues) |
 
-## Instruments in the case study
+The BA team must consider cross-market differences **without designing seven separate products**. One capability should have a common user experience, while eligibility, identifiers, calendars, holidays, event timing, language, and source-data quality can differ by venue.
 
-- Cash equities listed on one or more fictional Euronext venues.
-- Exchange-traded funds available through the Investor Workspace.
-- Corporate-action events associated with eligible instruments.
+## 2. Trading day (cash markets, CET)
 
-Derivatives, bonds, and non-Euronext instruments are outside the initial product boundary unless a source document explicitly changes that boundary.
+| Phase | Time |
+|---|---|
+| Pre-opening (orders collected, no trades) | 07:15 – 09:00 |
+| Opening auction | 09:00 |
+| Continuous trading | 09:00 – 17:30 |
+| Closing auction | 17:30 – 17:35 |
+| Trading at last | 17:35 – 17:40 |
 
-## Exchange-operator considerations
+Trading can be interrupted by a **reservation** (automatic halt when price leaves its collar) or a **suspension**. Markets are closed on the common trading calendar holidays, and some venues have extra local holidays.
 
-- Market information must be presented as information, not investment advice.
-- Event timestamps and source timestamps should remain distinguishable where they affect user understanding or operational investigation.
-- Coverage and eligibility should be explicit rather than inferred from a user's watchlist alone.
-- Access must be fair and non-discriminatory; the notification capability must not become a trading or execution advantage.
-- Operational records should support investigation across product, data, channel, compliance, privacy, and support teams.
-- Terminology should be consistent across client-facing channels and internal support views.
+## 3. Instruments in the case study
 
-## Fictional data vocabulary
+- Cash equities listed on one or more Euronext regulated markets.
+- ETFs available through the Investor Workspace.
+- Corporate-action events linked to eligible instruments (CR-01 only).
 
-The case study may use an instrument identifier, ticker, market code, event type, publication timestamp, status, and source reference. The exact formats and values are intentionally left for the requirements and source-system analysis rather than supplied as a completed design.
+Derivatives, bonds, warrants, certificates, Euronext Growth / Access segments, and non-Euronext instruments are outside the R1 boundary, unless a source document explicitly changes that.
+
+## 4. Market data in the Workspace
+
+- Non-subscribed users see prices **delayed by 15 minutes** (free, in line with MiFID II).
+- About **6% of accounts** have a **real-time entitlement** through a paid data subscription.
+- Data licences are managed by the Market Data Licensing & Policy team. Any new use of real-time data (including triggering alerts) must be checked with them.
+
+## 5. Exchange-operator considerations
+
+- Market information is presented as information, not investment advice (MAR, MiFID II).
+- Market (source) timestamps and processing timestamps are kept separate.
+- Coverage and eligibility are explicit — not inferred from a user's watchlist.
+- Access is fair and non-discriminatory. The notification capability must not become a trading or execution advantage.
+- Operational records support investigation across product, data, channel, compliance, privacy, and support teams.
+- Terminology is consistent across client channels and internal support tools, in all six languages.
+- Third-party ICT providers are managed under DORA.
+
+## 6. Data vocabulary
+
+The case study uses: ISIN, MIC, ticker (mnemonic), instrument name, trading phase, last traded price, traded volume, currency (EUR, NOK), market timestamp (UTC), processing timestamp (UTC), event type, status, and source reference. Exact formats are left for the requirements and source-system analysis.

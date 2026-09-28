@@ -1,63 +1,58 @@
 # System Landscape and Information Context
 
-This fictional inventory describes the systems and responsibilities available to the BA team. It is not an impact assessment.
+This fictional inventory describes the systems and owners available to the BA team. **It is not an impact assessment.**
 
-## Investor Workspace
+| System | Status | Owner (fictional) | Notes |
+|---|---|---|---|
+| Investor Workspace (web + iOS/Android) | Live | IC — Mobile & Web | Mobile release train every 4 weeks. Web releases weekly. |
+| Identity and Access Service | Live | IAM team | Support-role model under review (Q4 2026). |
+| Market Data Service | Live | MB — Market Data Eng | Distributes price and volume events. No intraday volume history stored. |
+| Alert Evaluation Service | **Proposed** | TBD | New build. |
+| Notification Orchestrator | **Proposed** | TBD | New build, or extend the existing marketing email tool? Not decided. |
+| Email Provider | Live (3rd party) | Digital Channels | Contract limit 50 msg/s. Delivery receipts: yes. Open tracking: yes (DPO concern). |
+| Mobile Push Provider | Live (3rd party) | IC | Token lifecycle managed by the mobile app. |
+| In-App Notification Store | **Proposed** | TBD | Retention and deletion to be confirmed. |
+| Customer Profile and Consent Service | Live | CRM team | Stores contact details, preferences, consent. Owner of push tokens unclear. |
+| Operations Monitoring Platform | Live | TL — SRE | Metrics, logs, alerts, correlation IDs. Role-restricted. |
+| Audit and Records Store | Live | Compliance IT | Retention schedules not yet agreed for this product. |
+| Support Console | Live | SK — Client Services | Search fields and visibility rules for alerts not defined. |
+| Corporate Actions master data | Live | RA — Corporate Actions | 30-min batch. Real-time interface on 2027 roadmap (not committed). |
+| Market Data Licensing register | Live | ASG — Licensing & Policy | Holds user real-time entitlements. |
 
-Client-facing web and mobile channels. Provides authentication, watchlists, alert setup, notification history, preference screens, and links back to market information.
+## Descriptions
 
-## Identity and Access Service
+**Investor Workspace** — Client-facing web and mobile channels. Provides authentication, watchlists, alert setup, notification history, preference screens, and links to instrument pages. Available in EN, FR, NL, IT, PT, NO.
 
-Authenticates users and provides roles for client-facing and internal support access. The exact support-role model is under review.
+**Identity and Access Service** — Authenticates clients and internal users and provides roles.
 
-## Market Data Service
+**Market Data Service** — Approved internal service distributing price and volume events for covered instruments, with a market timestamp and a service receipt timestamp. Also carries trading phase and halt/suspension status. The alert product must not connect directly to an exchange feed.
 
-Approved internal service that distributes price and volume events for covered instruments. Events contain market timestamps and service receipt timestamps. The alert product must not connect directly to an exchange feed.
+**Alert Evaluation Service** — Proposed. Stores active rules, evaluates eligible events, applies the rule lifecycle and repeat handling, and creates notification records.
 
-## Alert Evaluation Service
+**Notification Orchestrator** — Proposed. Accepts notification requests, selects the channel provider, handles retries and expiry, and records provider responses.
 
-Proposed service that stores active alert rules, evaluates eligible events, applies rule lifecycle and repeat-handling logic, and creates notification records.
+**Email Provider / Mobile Push Provider** — Third-party ICT providers (in scope of DORA). Capabilities, delivery receipts, and data retention need confirmation.
 
-## Notification Orchestrator
+**In-App Notification Store** — Proposed store behind the notification history.
 
-Proposed internal service that accepts notification requests, selects the requested channel provider, performs retry handling, and records provider responses.
+**Customer Profile and Consent Service** — Contact details, channel preferences, consent records.
 
-## Email Provider
+**Operations Monitoring Platform** — Service metrics, structured logs, alerts, correlation IDs.
 
-Approved channel provider for email delivery. Provider capabilities, delivery receipts, and retention behavior need confirmation.
+**Audit and Records Store** — Controlled records for changes to settings, rule lifecycle, triggering events, delivery status, and operational actions (including kill-switch use).
 
-## Mobile Push Provider
-
-Approved channel provider for mobile push delivery. Device registration and token lifecycle are managed through the mobile platform integration.
-
-## In-App Notification Store
-
-Internal store used to provide notification history in the Investor Workspace. Retention and deletion behavior need confirmation.
-
-## Customer Profile and Consent Service
-
-Stores contact details, channel preferences, and consent records used by client-facing services. The ownership boundary for device identifiers needs confirmation.
-
-## Operations Monitoring Platform
-
-Collects service metrics, structured logs, alerts, and correlation identifiers. Access is restricted by role.
-
-## Audit and Records Store
-
-Stores controlled records for changes to user settings, rule lifecycle, triggering events, delivery status, and operational actions. Retention schedules are not yet agreed.
-
-## Support Console
-
-Internal interface used by Client Services to investigate account and notification questions. Its search fields and visibility rules are not yet finalized.
+**Support Console** — Internal tool used by Client Services to investigate account and notification questions.
 
 ## Known interfaces
 
-- Investor Workspace to Identity and Access Service
-- Investor Workspace to Customer Profile and Consent Service
-- Investor Workspace to Alert Evaluation Service
-- Market Data Service to Alert Evaluation Service
-- Alert Evaluation Service to Notification Orchestrator
-- Notification Orchestrator to Email Provider and Mobile Push Provider
-- Notification Orchestrator to In-App Notification Store
-- Product services to Operations Monitoring Platform
-- Product services and Support Console to Audit and Records Store
+- Investor Workspace → Identity and Access Service
+- Investor Workspace → Customer Profile and Consent Service
+- Investor Workspace → Alert Evaluation Service
+- Market Data Service → Alert Evaluation Service
+- Market Data Licensing register → Alert Evaluation Service (*proposed — only if alerts depend on entitlement*)
+- Alert Evaluation Service → Notification Orchestrator
+- Notification Orchestrator → Email Provider and Mobile Push Provider
+- Notification Orchestrator → In-App Notification Store
+- Product services → Operations Monitoring Platform
+- Product services and Support Console → Audit and Records Store
+- Corporate Actions master data → Investor Workspace event-details service (daily copy, 06:00 CET)
